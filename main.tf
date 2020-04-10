@@ -18,7 +18,7 @@ resource "aws_iam_role_policy" "s3_access_policy" {
 
   policy = <<EOF
 {
-  "Version": "2020-04-09",
+  "Version": "2012-10-17",
   "Statement": [
     {
       "Effect": "Allow",
@@ -35,7 +35,7 @@ resource "aws_iam_role" "s3_access_role" {
 
   assume_role_policy = <<EOF
 {
-  "Version": "2020-04-09",
+  "Version": "2012-10-17",
   "Statement": [
     {
       "Action": "sts:AssumeRole",
@@ -78,7 +78,7 @@ resource "aws_route_table" "wp_public_rt" {
   vpc_id = "${aws_vpc.wp_vpc.id}"
 
   route {
-    cidr_block = "0.0.0.0"
+    cidr_block = "0.0.0.0/0"
     gateway_id = "${aws_internet_gateway.wp_internet_gateway.id}"
   }
 
@@ -354,7 +354,7 @@ resource "aws_s3_bucket" "code" {
 resource "aws_db_instance" "wp_db" {
   allocated_storage      = 10
   engine                 = "mysql"
-  engine_version         = "5.6.27"
+  engine_version         = "5.7.22"
   instance_class         = "${var.db_instance_class}"
   name                   = "${var.dbname}"
   username               = "${var.dbuser}"
@@ -400,7 +400,7 @@ EOD
   }
 
   provisioner "local-exec" {
-    command = "aws ec2 wait instance-status-ok --instance-ids ${aws_instance.wp_dev.id} --profile hunkenstein && ansible-playbook -i aws_hosts wordpress.yml"
+    command = "aws ec2 wait instance-status-ok --instance-ids ${aws_instance.wp_dev.id} --profile hulkenstein && ansible-playbook -i aws_hosts wordpress.yml"
   }
 }
 
