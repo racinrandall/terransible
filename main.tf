@@ -354,7 +354,7 @@ resource "aws_s3_bucket" "code" {
 resource "aws_db_instance" "wp_db" {
   allocated_storage      = 10
   engine                 = "mysql"
-  engine_version         = "5.7.22"
+  engine_version         = "5.6.46"
   instance_class         = "${var.db_instance_class}"
   name                   = "${var.dbname}"
   username               = "${var.dbuser}"
@@ -389,12 +389,12 @@ resource "aws_instance" "wp_dev" {
 
   provisioner "local-exec" {
     command = <<EOD
-cat <<EOF aws_hosts
-[dev]
-${aws_instance.wp_dev.public_ip}
-[dev:vars]
+cat <<EOF > aws_hosts 
+[dev] 
+${aws_instance.wp_dev.public_ip} 
+[dev:vars] 
 s3code=${aws_s3_bucket.code.bucket}
-domain=${var.domain_name}
+domain=${var.domain_name} 
 EOF
 EOD
   }
